@@ -70,11 +70,12 @@ class Settings < ActiveRecord::Base
     end
     defaults = @@defaults.select{ |k, v| k =~ /^#{starting_with}/ }
     defaults = Hash[defaults] if defaults.is_a?(Array)
-    defaults.merge(result).with_indifferent_access
+    old_final = defaults.merge(result).with_indifferent_access
     #return hash without parent prefix
     result1 = {}
-    result.keys.each do |k|
-      result1[k.gsub(/[a-zA-z0-9_]*\./)] = result[k]
+    old_final.keys.each do |k|
+      key = k.gsub(/[a-zA-z0-9_]*\./,"")
+      result1[key] = old_final[k]
     end
     return result1
   end
