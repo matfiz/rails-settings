@@ -71,6 +71,12 @@ class Settings < ActiveRecord::Base
     defaults = @@defaults.select{ |k, v| k =~ /^#{starting_with}/ }
     defaults = Hash[defaults] if defaults.is_a?(Array)
     defaults.merge(result).with_indifferent_access
+    #return hash without parent prefix
+    result1 = {}
+    result.keys.each do |k|
+      result1[k.gsub(/[a-zA-z0-9_]*\./)] = result[k]
+    end
+    return result1
   end
   
   #get a setting value by [] notation
